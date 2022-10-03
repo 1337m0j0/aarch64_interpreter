@@ -1,4 +1,6 @@
-#include "processor/instructions.h"
+#include <stdlib.h>
+
+#include "processor/alu_instructions.h"
 
 // ------------------------------------------------------------------------------------------------/
 // Internal functions
@@ -7,7 +9,7 @@
 static uint64_t
 operand2value(Registers* registers, Operand op)
 {
-  if (op.op_type == CONSTANT) {
+  if (op.type == CONSTANT) {
     return op.value.constant;
   } else {
     return Registers_Read(registers, op.value.register_name);

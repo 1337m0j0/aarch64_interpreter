@@ -4,8 +4,9 @@
 #include <string.h>
 
 #include "processor/central_processing_unit.h"
-#include "processor/instructions.h"
 #include "processor/registers.h"
+#include "program/instruction.h"
+#include "program/program.h"
 
 bool
 is_little_endian(void)
@@ -32,6 +33,24 @@ is_system_sane(void)
   return result;
 }
 
+Operand*
+mk_op_register(RegisterName register_name)
+{
+  Operand* op = (Operand*)malloc(sizeof(Operand));
+  op->type = REGISTER;
+  op->value.register_name = register_name;
+  return op;
+}
+
+Operand*
+mk_op_constant(uint64_t constant)
+{
+  Operand* op = (Operand*)malloc(sizeof(Operand));
+  op->type = CONSTANT;
+  op->value.constant = constant;
+  return op;
+}
+
 int
 main(int argc, char** argv)
 {
@@ -46,40 +65,31 @@ main(int argc, char** argv)
     Instruction** program = (Instruction**)malloc(4 * sizeof(Instruction*));
 
     // MOV X1, 8
-    InstructionName instr_01_name = MOV;
-    Operand instr_01_op_01 = { .op_type = REGISTER, .value.register_name = X1 };
-    Operand instr_01_op_02 = { .op_type = CONSTANT, .value.constant = 8U };
-    Operand** instr_01_operands = (Operand**)malloc(2 * sizeof(Operand*));
-    instr_01_operands[0] = &instr_01_op_01;
-    instr_01_operands[1] = &instr_01_op_02;
-    Instruction instr_01 = { .name = instr_01_name,
-                             .operands = instr_01_operands };
-    program[0] = &instr_01;
+    program[0] = (Instruction*)malloc(sizeof(Instruction));
+    program[0]->name = MOV;
+    program[0]->operands = (Operand**)malloc(3 * sizeof(Operand*));
+    program[0]->operands[0] = mk_op_register(X1);
+    program[0]->operands[1] = mk_op_constant(8U);
+    program[0]->operands[2] = (Operand*)NULL;
 
     // MOV X2, 24
-    InstructionName instr_02_name = MOV;
-    Operand instr_02_op_01 = { .op_type = REGISTER, .value.register_name = X2 };
-    Operand instr_02_op_02 = { .op_type = CONSTANT, .value.constant = 24U };
-    Operand** instr_02_operands = (Operand**)malloc(2 * sizeof(Operand*));
-    instr_02_operands[0] = &instr_02_op_01;
-    instr_02_operands[1] = &instr_02_op_02;
-    Instruction instr_02 = { .name = instr_02_name,
-                             .operands = instr_02_operands };
-    program[1] = &instr_02;
+    program[1] = (Instruction*)malloc(sizeof(Instruction));
+    program[1]->name = MOV;
+    program[1]->operands = (Operand**)malloc(3 * sizeof(Operand*));
+    program[1]->operands[0] = mk_op_register(X2);
+    program[1]->operands[1] = mk_op_constant(24U);
+    program[1]->operands[2] = (Operand*)NULL;
 
     // ADD X0, X1, X2
-    InstructionName instr_03_name = ADD;
-    Operand instr_03_op_01 = { .op_type = REGISTER, .value.register_name = X0 };
-    Operand instr_03_op_02 = { .op_type = REGISTER, .value.register_name = X1 };
-    Operand instr_03_op_03 = { .op_type = REGISTER, .value.register_name = X2 };
-    Operand** instr_03_operands = (Operand**)malloc(3 * sizeof(Operand*));
-    instr_03_operands[0] = &instr_03_op_01;
-    instr_03_operands[1] = &instr_03_op_02;
-    instr_03_operands[2] = &instr_03_op_03;
-    Instruction instr_03 = { .name = instr_03_name,
-                             .operands = instr_03_operands };
-    program[2] = &instr_03;
+    program[2] = (Instruction*)malloc(sizeof(Instruction));
+    program[2]->name = ADD;
+    program[2]->operands = (Operand**)malloc(4 * sizeof(Operand*));
+    program[2]->operands[0] = mk_op_register(X0);
+    program[2]->operands[1] = mk_op_register(X1);
+    program[2]->operands[2] = mk_op_register(X2);
+    program[2]->operands[3] = (Operand*)NULL;
 
+    // end of program
     program[3] = (Instruction*)NULL;
 
     // setup
@@ -99,6 +109,7 @@ main(int argc, char** argv)
 
     // cleanup
     CentralProcessingUnit_Destroy(cpu);
+    Program_Destroy(program);
 
     // long double reg128 = 0;
     // uint8_t* reg128_ptr = (uint8_t*)&reg128;

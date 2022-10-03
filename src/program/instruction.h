@@ -1,33 +1,45 @@
-#ifndef SRC_PROCESSOR_PROCESSOR_H
-#define SRC_PROCESSOR_PROCESSOR_H
-
-#include <stdint.h>
+#ifndef PROGRAM_INSTRUCTION_H
+#define PROGRAM_INSTRUCTION_H
 
 #include "processor/registers.h"
-#include "program/instruction.h"
 
 // ------------------------------------------------------------------------------------------------/
 // Public types
 // ------------------------------------------------------------------------------------------------/
 
+typedef enum
+{
+  MOV,
+  ADD
+} InstructionName;
+
+typedef enum
+{
+  REGISTER,
+  CONSTANT
+} OperandType;
+
 typedef struct
 {
-  Registers* registers;
-  uint64_t status_register;
-  Instruction** program_counter;
-} CentralProcessingUnit;
+  OperandType type;
+  union
+  {
+    RegisterName register_name;
+    uint64_t constant;
+  } value;
+} Operand;
+
+typedef struct
+{
+  InstructionName name;
+  Operand** operands;
+} Instruction;
 
 // ------------------------------------------------------------------------------------------------/
 // Public functions
 // ------------------------------------------------------------------------------------------------/
 
-CentralProcessingUnit*
-CentralProcessingUnit_Create(void);
-
 void
-CentralProcessingUnit_Destroy(CentralProcessingUnit* cpu);
-
-int
-CentralProcessingUnit_Run(CentralProcessingUnit* cpu);
+Instruction_Destroy(Instruction* instruction);
 
 #endif

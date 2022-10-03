@@ -1,6 +1,8 @@
-#include "central_processing_unit.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "processor/alu_instructions.h"
+#include "processor/central_processing_unit.h"
 
 CentralProcessingUnit*
 CentralProcessingUnit_Create(void)

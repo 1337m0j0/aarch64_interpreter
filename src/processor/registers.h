@@ -1,7 +1,11 @@
 #include <stdint.h>
 
-#ifndef PROCESSOR_REGISTERS_REGISTERS_H
-#define PROCESSOR_REGISTERS_REGISTERS_H
+#ifndef PROCESSOR_REGISTERS_H
+#define PROCESSOR_REGISTERS_H
+
+// ------------------------------------------------------------------------------------------------/
+// Public types
+// ------------------------------------------------------------------------------------------------/
 
 typedef struct
 {
@@ -309,6 +313,10 @@ typedef enum
   WZR
 } RegisterName;
 
+// ------------------------------------------------------------------------------------------------/
+// Public functions
+// ------------------------------------------------------------------------------------------------/
+
 Registers*
 Registers_Create(void);
 
@@ -322,11 +330,5 @@ void
 Registers_Write(Registers* registers,
                 RegisterName register_name,
                 uint64_t new_value);
-
-uint8_t
-register_read_8bit(Registers* registers, RegisterName register_name);
-
-uint16_t
-register_read_16bit(Registers* registers, RegisterName register_name);
 
 #endif
