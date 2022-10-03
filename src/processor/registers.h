@@ -71,7 +71,7 @@ typedef struct
   long double Q29;
   long double Q30;
   long double Q31;
-}  Registers;
+} Registers;
 
 typedef enum
 {

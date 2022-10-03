@@ -3,21 +3,22 @@
 
 #include <stdint.h>
 
-#include "processor/registers.h"
 #include "processor/instructions.h"
+#include "processor/registers.h"
 
-typedef struct {
+typedef struct
+{
 
-    // registers
-    Registers* registers;
+  // registers
+  Registers* registers;
 
-    // status register
-    uint64_t status_register;
+  // status register
+  uint64_t status_register;
 
-    // program counter
-    Instruction** program_counter;
+  // program counter
+  Instruction** program_counter;
 
-    // memory interface
+  // memory interface
 
 } CentralProcessingUnit;
 

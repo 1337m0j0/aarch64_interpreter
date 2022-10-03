@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "processor/central_processing_unit.h"
 #include "processor/instructions.h"
 #include "processor/registers.h"
-#include "processor/central_processing_unit.h"
 
 bool
 is_little_endian(void)
@@ -22,7 +22,7 @@ is_system_sane(void)
 {
   bool result = true;
   // 'long double' must be 128 bit
-  if (sizeof(long double) != 128/8) {
+  if (sizeof(long double) != 128 / 8) {
     result = false;
   }
   // system must be little-endian
@@ -52,7 +52,8 @@ main(int argc, char** argv)
     Operand** instr_01_operands = (Operand**)malloc(2 * sizeof(Operand*));
     instr_01_operands[0] = &instr_01_op_01;
     instr_01_operands[1] = &instr_01_op_02;
-    Instruction instr_01 = { .name = instr_01_name, .operands = instr_01_operands };
+    Instruction instr_01 = { .name = instr_01_name,
+                             .operands = instr_01_operands };
     program[0] = &instr_01;
 
     // MOV X2, 24
@@ -62,7 +63,8 @@ main(int argc, char** argv)
     Operand** instr_02_operands = (Operand**)malloc(2 * sizeof(Operand*));
     instr_02_operands[0] = &instr_02_op_01;
     instr_02_operands[1] = &instr_02_op_02;
-    Instruction instr_02 = { .name = instr_02_name, .operands = instr_02_operands };
+    Instruction instr_02 = { .name = instr_02_name,
+                             .operands = instr_02_operands };
     program[1] = &instr_02;
 
     // ADD X0, X1, X2
@@ -74,7 +76,8 @@ main(int argc, char** argv)
     instr_03_operands[0] = &instr_03_op_01;
     instr_03_operands[1] = &instr_03_op_02;
     instr_03_operands[2] = &instr_03_op_03;
-    Instruction instr_03 = { .name = instr_03_name, .operands = instr_03_operands };
+    Instruction instr_03 = { .name = instr_03_name,
+                             .operands = instr_03_operands };
     program[2] = &instr_03;
 
     program[3] = (Instruction*)NULL;

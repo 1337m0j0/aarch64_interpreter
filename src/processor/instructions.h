@@ -4,38 +4,38 @@
 #ifndef INSTRUCTION_SET_A64_H
 #define INSTRUCTION_SET_A64_H
 
-typedef enum {
+typedef enum
+{
   MOV,
   ADD
 } InstructionName;
 
-typedef enum {
+typedef enum
+{
   REGISTER,
   CONSTANT
 } OperandType;
 
-typedef struct {
+typedef struct
+{
   OperandType op_type;
-  union {
+  union
+  {
     RegisterName register_name;
     uint64_t constant;
   } value;
 } Operand;
 
-typedef struct {
+typedef struct
+{
   InstructionName name;
   Operand** operands;
 } Instruction;
 
 void
-instr_a64_ADD(Registers* registers,
-              Operand op_a,
-              Operand op_b,
-              Operand op_c);
+instr_a64_ADD(Registers* registers, Operand op_a, Operand op_b, Operand op_c);
 
 void
-instr_a64_MOV(Registers* registers,
-              Operand op_a,
-              Operand op_b);
+instr_a64_MOV(Registers* registers, Operand op_a, Operand op_b);
 
 #endif
