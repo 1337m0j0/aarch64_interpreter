@@ -47,34 +47,34 @@ main(int argc, char** argv)
 
     // MOV X1, 8
     InstructionName instr_01_name = MOV;
-    Operand instr_01_op_01 = { .op_type = REGISTER, .register_name = X1 };
-    Operand instr_01_op_02 = { .op_type = CONSTANT, .constant = 8U };
+    Operand instr_01_op_01 = { .op_type = REGISTER, .value.register_name = X1 };
+    Operand instr_01_op_02 = { .op_type = CONSTANT, .value.constant = 8U };
     Operand** instr_01_operands = (Operand**)malloc(2 * sizeof(Operand*));
     instr_01_operands[0] = &instr_01_op_01;
     instr_01_operands[1] = &instr_01_op_02;
-    Instruction instr_01 = { .instruction = instr_01_name, .operands = instr_01_operands };
+    Instruction instr_01 = { .name = instr_01_name, .operands = instr_01_operands };
     program[0] = &instr_01;
 
     // MOV X2, 24
     InstructionName instr_02_name = MOV;
-    Operand instr_02_op_01 = { .op_type = REGISTER, .register_name = X2 };
-    Operand instr_02_op_02 = { .op_type = CONSTANT, .constant = 24U };
+    Operand instr_02_op_01 = { .op_type = REGISTER, .value.register_name = X2 };
+    Operand instr_02_op_02 = { .op_type = CONSTANT, .value.constant = 24U };
     Operand** instr_02_operands = (Operand**)malloc(2 * sizeof(Operand*));
     instr_02_operands[0] = &instr_02_op_01;
     instr_02_operands[1] = &instr_02_op_02;
-    Instruction instr_02 = { .instruction = instr_02_name, .operands = instr_02_operands };
+    Instruction instr_02 = { .name = instr_02_name, .operands = instr_02_operands };
     program[1] = &instr_02;
 
     // ADD X0, X1, X2
     InstructionName instr_03_name = ADD;
-    Operand instr_03_op_01 = { .op_type = REGISTER, .register_name = X0 };
-    Operand instr_03_op_02 = { .op_type = REGISTER, .register_name = X1 };
-    Operand instr_03_op_03 = { .op_type = REGISTER, .register_name = X2 };
+    Operand instr_03_op_01 = { .op_type = REGISTER, .value.register_name = X0 };
+    Operand instr_03_op_02 = { .op_type = REGISTER, .value.register_name = X1 };
+    Operand instr_03_op_03 = { .op_type = REGISTER, .value.register_name = X2 };
     Operand** instr_03_operands = (Operand**)malloc(3 * sizeof(Operand*));
     instr_03_operands[0] = &instr_03_op_01;
     instr_03_operands[1] = &instr_03_op_02;
     instr_03_operands[2] = &instr_03_op_03;
-    Instruction instr_03 = { .instruction = instr_03_name, .operands = instr_03_operands };
+    Instruction instr_03 = { .name = instr_03_name, .operands = instr_03_operands };
     program[2] = &instr_03;
 
     program[3] = (Instruction*)NULL;
@@ -89,13 +89,6 @@ main(int argc, char** argv)
     printf("X2 = %llu\n", Registers_Read(cpu->registers, X2));
 
     retval = CentralProcessingUnit_Run(cpu);
-
-    // MOV X1 #8
-    // instr_a64_MOV(cpu->registers, X1, 8U);
-    // MOV X2 #24
-    // instr_a64_MOV(cpu->registers, X2, 24U);
-    // ADD X0 X1 X2
-    // instr_a64_ADD(cpu->registers, X0, X1, X2);
 
     printf("X0 = %llu\n", Registers_Read(cpu->registers, X0));
     printf("X1 = %llu\n", Registers_Read(cpu->registers, X1));

@@ -30,17 +30,17 @@ CentralProcessingUnit_Run(CentralProcessingUnit* cpu)
       // DECODE & EXECUTE
       // * identify the instruction to be executed and its arguments
       // * execute the instruction
-      switch (current_instruction->instruction) {
+      switch (current_instruction->name) {
         case MOV:
           instr_a64_MOV(cpu->registers,
-                        current_instruction->operands[0]->register_name,
-                        current_instruction->operands[1]->constant);
+                        *current_instruction->operands[0],
+                        *current_instruction->operands[1]);
           break;
         case ADD:
           instr_a64_ADD(cpu->registers,
-                        current_instruction->operands[0]->register_name,
-                        current_instruction->operands[1]->register_name,
-                        current_instruction->operands[2]->register_name);
+                        *current_instruction->operands[0],
+                        *current_instruction->operands[1],
+                        *current_instruction->operands[2]);
           break;
         default:
           break;

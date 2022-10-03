@@ -19,23 +19,23 @@ typedef struct {
   union {
     RegisterName register_name;
     uint64_t constant;
-  };
+  } value;
 } Operand;
 
 typedef struct {
-  InstructionName instruction;
+  InstructionName name;
   Operand** operands;
 } Instruction;
 
 void
 instr_a64_ADD(Registers* registers,
-              RegisterName register_a,
-              RegisterName register_b,
-              RegisterName register_c);
+              Operand op_a,
+              Operand op_b,
+              Operand op_c);
 
 void
 instr_a64_MOV(Registers* registers,
-              RegisterName register_a,
-              uint64_t value);
+              Operand op_a,
+              Operand op_b);
 
 #endif
