@@ -1,5 +1,5 @@
-#ifndef PROGRAM_INSTRUCTION_H
-#define PROGRAM_INSTRUCTION_H
+#ifndef SRC_PROGRAM_INSTRUCTION_H
+#define SRC_PROGRAM_INSTRUCTION_H
 
 #include "processor/registers.h"
 

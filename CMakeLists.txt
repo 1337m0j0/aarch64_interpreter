@@ -1,5 +1,9 @@
 cmake_minimum_required (VERSION 3.16)
 
+# toolchain settings (must be placed before 'project' call)
+set(CMAKE_C_COMPILER "clang")
+
+# project settings
 project(
     aarch64_interpreter
     VERSION 0.0.1
@@ -18,6 +22,8 @@ set(CMAKE_C_FLAGS "-Wall -Wextra -Wpedantic -g")
 set(CMAKE_BUILD_TYPE Debug)
 
 # library with core functions
+# TODO: check what headers should be public, then update the build configuration such
+# that the library and the headers are exported adequately. need own cmake project?
 set(LIB_COMMON aarch64_interpreter_lib)
 add_library(${LIB_COMMON} OBJECT "")
 target_include_directories(${LIB_COMMON} PRIVATE src)

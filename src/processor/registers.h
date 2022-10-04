@@ -1,7 +1,7 @@
-#include <stdint.h>
+#ifndef SRC_PROCESSOR_REGISTERS_H
+#define SRC_PROCESSOR_REGISTERS_H
 
-#ifndef PROCESSOR_REGISTERS_H
-#define PROCESSOR_REGISTERS_H
+#include <stdint.h>
 
 // ------------------------------------------------------------------------------------------------/
 // Public types
