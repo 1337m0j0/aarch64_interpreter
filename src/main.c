@@ -1,5 +1,5 @@
-#include <bits/stdint-uintn.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -181,57 +181,56 @@ main(void)
   }
 
   else {
-    Instruction** program = (Instruction**)malloc(4 * sizeof(Instruction*));
+    Program* program = Program_Create();
 
     // MOV X1, 8
-    program[0] = (Instruction*)malloc(sizeof(Instruction));
-    program[0]->name = MOV;
-    program[0]->operands = (Operand**)malloc(3 * sizeof(Operand*));
-    program[0]->operands[0] = mk_op_register(X1);
-    program[0]->operands[1] = mk_op_constant(8U);
-    program[0]->operands[2] = (Operand*)NULL;
+    Program_AppendInstruction(program,
+                              "_start",
+                              Instruction_Create(MOV,
+                                                 (Operand){ REGISTER, { X1 } },
+                                                 (Operand){ CONSTANT, { 8U } },
+                                                 (Operand){ NIL, { 0U } }));
 
     // MOV X2, 24
-    program[1] = (Instruction*)malloc(sizeof(Instruction));
-    program[1]->name = MOV;
-    program[1]->operands = (Operand**)malloc(3 * sizeof(Operand*));
-    program[1]->operands[0] = mk_op_register(X2);
-    program[1]->operands[1] = mk_op_constant(24U);
-    program[1]->operands[2] = (Operand*)NULL;
+    Program_AppendInstruction(program,
+                              (char*)NULL,
+                              Instruction_Create(MOV,
+                                                 (Operand){ REGISTER, { X2 } },
+                                                 (Operand){ CONSTANT, { 24U } },
+                                                 (Operand){ NIL, { 0U } }));
 
     // ADD X0, X1, X2
-    program[2] = (Instruction*)malloc(sizeof(Instruction));
-    program[2]->name = ADD;
-    program[2]->operands = (Operand**)malloc(4 * sizeof(Operand*));
-    program[2]->operands[0] = mk_op_register(X0);
-    program[2]->operands[1] = mk_op_register(X1);
-    program[2]->operands[2] = mk_op_register(X2);
-    program[2]->operands[3] = (Operand*)NULL;
+    Program_AppendInstruction(
+      program,
+      (char*)NULL,
+      Instruction_Create(ADD,
+                         (Operand){ REGISTER, { X0 } },
+                         (Operand){ REGISTER, { X1 } },
+                         (Operand){ REGISTER, { X2 } }));
 
-    // end of program
-    program[3] = (Instruction*)NULL;
-
-    // setup
+    // create CPU
     CentralProcessingUnit* cpu = CentralProcessingUnit_Create();
-    cpu->program_counter = program;
 
-    // tests
-    printf("X0 = %lu\n", Registers_Read(cpu->registers, X0));
-    printf("X1 = %lu\n", Registers_Read(cpu->registers, X1));
-    printf("X2 = %lu\n", Registers_Read(cpu->registers, X2));
+    // set program counter
+    CentralProcessingUnit_SetProgramCounter(
+      cpu, Program_GetInitialInstruction(program));
 
+    printf("X0 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X0));
+    printf("X1 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X1));
+    printf("X2 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X2));
+
+    // start execution
     retval = CentralProcessingUnit_Run(cpu);
 
-    printf("X0 = %lu\n", Registers_Read(cpu->registers, X0));
-    printf("X1 = %lu\n", Registers_Read(cpu->registers, X1));
-    printf("X2 = %lu\n", Registers_Read(cpu->registers, X2));
+    printf("X0 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X0));
+    printf("X1 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X1));
+    printf("X2 = %lu\n", CentralProcessingUnit_ReadRegister(cpu, X2));
 
-    // cleanup
     CentralProcessingUnit_Destroy(cpu);
     Program_Destroy(program);
   }
 
-  test_long_double();
+  // test_long_double();
 
   return retval;
 }

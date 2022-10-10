@@ -3,20 +3,22 @@
 
 #include "processor/registers.h"
 
-// ------------------------------------------------------------------------------------------------/
+// ---------------------------------------------------------------------------/
 // Public types
-// ------------------------------------------------------------------------------------------------/
+// ---------------------------------------------------------------------------/
 
 typedef enum
 {
+  // ALU instructions
   MOV,
   ADD
 } InstructionName;
 
 typedef enum
 {
-  REGISTER,
-  CONSTANT
+  REGISTER, // CPU register
+  CONSTANT, // immediate value
+  NIL       // no operand (placeholder for fixed-length instruction)
 } OperandType;
 
 typedef struct
@@ -32,12 +34,15 @@ typedef struct
 typedef struct
 {
   InstructionName name;
-  Operand** operands;
+  Operand operands[3];
 } Instruction;
 
-// ------------------------------------------------------------------------------------------------/
+// ---------------------------------------------------------------------------/
 // Public functions
-// ------------------------------------------------------------------------------------------------/
+// ---------------------------------------------------------------------------/
+
+Instruction*
+Instruction_Create(InstructionName name, Operand op0, Operand op1, Operand op2);
 
 void
 Instruction_Destroy(Instruction* instruction);

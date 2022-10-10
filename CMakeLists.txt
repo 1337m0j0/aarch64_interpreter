@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 3.16)
 
 # toolchain settings (must be placed before 'project' call)
 set(CMAKE_C_COMPILER "clang")
+set(CMAKE_CXX_COMPILER "clang++")
 
 # project settings
 project(
