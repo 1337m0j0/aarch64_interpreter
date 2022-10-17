@@ -19,8 +19,11 @@ Program_Create(void);
 // Note: The program takes ownership of the instruction.
 int
 Program_AppendInstruction(Program* program,
-                          char* label,
                           Instruction* instruction);
+
+void
+Program_AddStartLabel(Program* program,
+                      char* label);
 
 Instruction**
 Program_GetInitialInstruction(Program* program);

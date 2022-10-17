@@ -1,7 +1,7 @@
 #ifndef SRC_PROGRAM_INSTRUCTION_H
 #define SRC_PROGRAM_INSTRUCTION_H
 
-#include "processor/registers.h"
+#include "program/operand.h"
 
 // ---------------------------------------------------------------------------/
 // Public types
@@ -14,27 +14,11 @@ typedef enum
   ADD
 } InstructionName;
 
-typedef enum
-{
-  REGISTER, // CPU register
-  CONSTANT, // immediate value
-  NIL       // no operand (placeholder for fixed-length instruction)
-} OperandType;
-
-typedef struct
-{
-  OperandType type;
-  union
-  {
-    RegisterName register_name;
-    uint64_t constant;
-  } value;
-} Operand;
-
 typedef struct
 {
   InstructionName name;
   Operand operands[3];
+  char* label;
 } Instruction;
 
 // ---------------------------------------------------------------------------/
@@ -42,7 +26,11 @@ typedef struct
 // ---------------------------------------------------------------------------/
 
 Instruction*
-Instruction_Create(InstructionName name, Operand op0, Operand op1, Operand op2);
+Instruction_Create(InstructionName name,
+                   Operand op0,
+                   Operand op1,
+                   Operand op2,
+                   char* label);
 
 void
 Instruction_Destroy(Instruction* instruction);

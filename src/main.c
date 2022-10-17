@@ -183,30 +183,32 @@ main(void)
   else {
     Program* program = Program_Create();
 
+    Program_AddStartLabel(program, "_start");
+
     // MOV X1, 8
     Program_AppendInstruction(program,
-                              "_start",
                               Instruction_Create(MOV,
-                                                 (Operand){ REGISTER, { X1 } },
-                                                 (Operand){ CONSTANT, { 8U } },
-                                                 (Operand){ NIL, { 0U } }));
+                                                 Operand_CreateRegister(X1),
+                                                 Operand_CreateConstant(8),
+                                                 Operand_CreateConstant(0),
+                                                 "_start"));
 
     // MOV X2, 24
     Program_AppendInstruction(program,
-                              (char*)NULL,
                               Instruction_Create(MOV,
-                                                 (Operand){ REGISTER, { X2 } },
-                                                 (Operand){ CONSTANT, { 24U } },
-                                                 (Operand){ NIL, { 0U } }));
+                                                 Operand_CreateRegister(X2),
+                                                 Operand_CreateConstant(24),
+                                                 Operand_CreateConstant(0),
+                                                 (char*)NULL));
 
     // ADD X0, X1, X2
     Program_AppendInstruction(
       program,
-      (char*)NULL,
       Instruction_Create(ADD,
-                         (Operand){ REGISTER, { X0 } },
-                         (Operand){ REGISTER, { X1 } },
-                         (Operand){ REGISTER, { X2 } }));
+                         Operand_CreateRegister(X0),
+                         Operand_CreateRegister(X1),
+                         Operand_CreateRegister(X2),
+                         (char*)NULL));
 
     // create CPU
     CentralProcessingUnit* cpu = CentralProcessingUnit_Create();

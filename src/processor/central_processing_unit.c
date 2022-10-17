@@ -47,9 +47,14 @@ CentralProcessingUnit_ReadRegister(CentralProcessingUnit* cpu,
 int
 CentralProcessingUnit_Run(CentralProcessingUnit* cpu)
 {
+  if (cpu->program_counter == (Instruction**)NULL) {
+    // nothing to execute
+    return -1;
+  }
   while (true) {
     Instruction* current_instruction = *(cpu->program_counter);
     if (current_instruction == (Instruction*)NULL) {
+      // nothing more to execute
       break;
     }
     cpu->program_counter++;

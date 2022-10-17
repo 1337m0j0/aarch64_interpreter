@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "program/instruction.h"
 #include "program/program.h"
@@ -19,7 +20,29 @@ struct Program
   Instruction** instructions;
   unsigned short size;
   unsigned short capacity;
+  char* start_label;
 };
+
+// ------------------------------------------------------------------------------------------------/
+// Private functions
+// ------------------------------------------------------------------------------------------------/
+
+Instruction**
+get_instruction_at_label(Program* program, char* label)
+{
+  if (label == (char*)NULL) {
+    return (Instruction**)NULL;
+  }
+  Instruction** current_instruction = program->instructions;
+  while (*current_instruction != (Instruction*)NULL) {
+    if ((*current_instruction)->label != (char*)NULL &&
+        strcmp(label, (*current_instruction)->label) == 0) {
+      break;
+    }
+    current_instruction++;
+  }
+  return current_instruction;
+}
 
 // ------------------------------------------------------------------------------------------------/
 // Public functions
@@ -33,17 +56,23 @@ Program_Create(void)
   program->capacity = INSTRUCTIONS_CAPACITY_INCREMENTS;
   program->instructions =
     (Instruction**)calloc(program->capacity + 1, sizeof(Instruction*));
-
+  program->start_label = (char*)NULL;
   return program;
 }
 
-int
-Program_AppendInstruction(Program* program,
-                          char* label,
-                          Instruction* instruction)
+void
+Program_AddStartLabel(Program* program, char* label)
 {
-  // TODO: store label association to instruction
+  program->start_label = (char*)calloc(strlen(label) + 1, sizeof(char));
+  char* res = strncpy(program->start_label, label, strlen(label));
+  if (res != program->start_label) {
+    // TODO: PANIC
+  }
+}
 
+int
+Program_AppendInstruction(Program* program, Instruction* instruction)
+{
   if (program->size == program->capacity) {
     if (program->capacity == INSTRUCTIONS_CAPACITY_MAX) {
       // error: no more space can be allocated
@@ -75,12 +104,15 @@ Program_AppendInstruction(Program* program,
 Instruction**
 Program_GetInitialInstruction(Program* program)
 {
-  return program->instructions;
+  return get_instruction_at_label(program, program->start_label);
 }
 
 void
 Program_Destroy(Program* program)
 {
+  if (program->start_label != (char*)NULL) {
+    free(program->start_label);
+  }
   for (int i = 0; i < program->size; i++) {
     free(program->instructions[i]);
   }
